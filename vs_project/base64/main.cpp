@@ -112,7 +112,7 @@ unsigned char get_binary(unsigned char c)
 	}
 	else
 	{
-		i=0;
+		i=64;
 		throw(illegal_char);
 	}
 	return i;
@@ -161,14 +161,25 @@ int base64_to_binary(char *input,int len,char*result)
 {
 	int i,j,k,t;
 
-	for(i=0,j=0;i<len;i++,j++)
+	for(i=0,j=0;i<len;i++)
 	{
+		/*
 		if((i+1)%77==0)
 		{
 			assert(input[i]=='\n'||input[i]==0);
 			i++;
 		}
+		*/
+		if(input[i]==' '||input[i]=='\n'||input[i]=='\a'||input[i]=='\t')
+		{
+			continue;
+		}
 		mid[j]=get_binary(input[i]);
+		j++;
+	}
+	if(j%4!=0)
+	{
+		throw illegal_format;
 	}
 	for(k=0,t=0;k<j;k+=4,t+=3)
 	{
@@ -233,7 +244,7 @@ int main(int argc,char ** argv)
 		}
 		else if((strcmp(argv[1],"-d")==0||strcmp(argv[1],"-D")==0) && argc==3)
 		{
-			char line[128];
+			char buffer[128];
 			char result[128];
 			state=2;
 			file_name=string(argv[2]);
@@ -245,16 +256,18 @@ int main(int argc,char ** argv)
 			int len2;
 			while(input_file.eof()==false)
 			{
-				if(input_file.getline(line,128)==0)
+				len=0;
+				char c;
+				while((len<76)&&(input_file>>c) )
 				{
-					throw illegal_format;
+					if(c==' '||c=='\n'||c=='\a'||c=='\t')
+					{
+						continue;
+					}
+					buffer[len]=c;
+					len++;
 				}
-				len=strlen(line);
-				if(len>76)
-				{
-					throw illegal_format;
-				}
-				len2=base64_to_binary(line,len,result);
+				len2=base64_to_binary(buffer,len,result);
 				//cout.write(result,len2);
 				output_file.write(result,len2);
 				if(len<76)
