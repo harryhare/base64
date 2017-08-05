@@ -207,10 +207,10 @@ int main(int argc,char ** argv)
 		if(argc==1 || strcmp(argv[1],"help")==0 || strcmp(argv[1],"-h")==0)
 		{
 			cout<<"-h           \tHelp"<<endl;
-			cout<<"-c [filename]\tCode"<<endl;
+			cout<<"-e [filename]\tEncode"<<endl;
 			cout<<"-d [filename]\tDecode"<<endl;
 		}
-		else if((strcmp(argv[1],"-c")==0||strcmp(argv[1],"-C")==0) && argc==3)
+		else if((strcmp(argv[1],"-e")==0||strcmp(argv[1],"-E")==0) && argc==3)
 		{
 			char buffer[128];
 			char result[128];
