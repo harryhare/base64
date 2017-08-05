@@ -3,7 +3,7 @@ Hello base64
 #**使用方法**
 ##命令行运行，输入输出为文件形式，命令格式如下，
 ### -h              Help
-### -c [filename]   Enode
+### -e [filename]   Enode
 ### -d [filename]   Decode
 
 
